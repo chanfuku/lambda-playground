@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      function onSubmit() {
+        var data = {
+          'username': $('#username').val(),
+          'email' : $('#email').val()
+        };
+        $.ajax({
+          'type': 'POST',
+          'url': 'https://emb3g7nqab.execute-api.ap-northeast-1.amazonaws.com/default/userregistFunction',
+          'contentType': 'application/json',
+          'data': JSON.stringify(data)
+        }).done(function (data, textStatus, jqXHR) {
+          alert('送信完了しました')
+          $('#username').val('');
+          $('#email').val('');
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          alert('サーバー内部でエラーが発生しました');
+        })
+      }
+      </script>
+    </head>
+    <body>
+      <div class="container">
+      <h1>お問い合わせフォーム</h1>
+      <div class="form-group">
+        <label for="username">氏名</label>
+        <input type="text" class="form-control" id="username">
+      </div>
+      <div class="form-group">
+        <label for="email">メールアドレス</label>
+        <input type="text" class="form-control" id="email">
+      </div>
+      <button id="submit" class="btn btn-primary" onclick="onSubmit();return false;">送信</button>
+      </div>
+    </body>
+  </html>

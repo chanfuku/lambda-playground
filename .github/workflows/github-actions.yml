@@ -1,0 +1,17 @@
+name: deploy index.html to s3
+
+on:
+  push:
+      branches:
+        - main
+
+deploy:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Deploy  # S3にデプロイ
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ap-northeast-1
+      run: |
+        aws s3 sync ./lambda-apigateway-dynamodb-ses/index.html s3://lambda-web-example-20221010
