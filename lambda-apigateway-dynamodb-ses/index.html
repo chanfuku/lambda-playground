@@ -9,7 +9,8 @@
       function onSubmit() {
         var data = {
           'username': $('#username').val(),
-          'email' : $('#email').val()
+          'email' : $('#email').val(),
+          'inquiry' : $('#inquiry').val(),
         };
         $.ajax({
           'type': 'POST',
@@ -20,6 +21,7 @@
           alert('送信完了しました')
           $('#username').val('');
           $('#email').val('');
+          $('#inquiry').val('');
         }).fail(function (jqXHR, textStatus, errorThrown) {
           alert('サーバー内部でエラーが発生しました');
         })
@@ -29,15 +31,19 @@
     <body>
       <div class="container">
       <h1>お問い合わせフォーム</h1>
-      <div class="form-group">
-        <label for="username">氏名</label>
+      <div class="form-group mt-4">
+        <label for="username" class="form-label">氏名</label>
         <input type="text" class="form-control" id="username">
       </div>
-      <div class="form-group">
-        <label for="email">メールアドレス</label>
+      <div class="form-group mt-4">
+        <label for="email" class="form-label">メールアドレス</label>
         <input type="text" class="form-control" id="email">
       </div>
-      <button id="submit" class="btn btn-primary" onclick="onSubmit();return false;">送信</button>
+      <div class="form-group mt-4">
+        <label for="inquiry" class="form-label">お問い合わせ内容</label>
+        <textarea class="form-control" id="inquiry" rows="3"></textarea>
+      </div>
+      <button id="submit" class="btn btn-primary mt-4" onclick="onSubmit();return false;">送信</button>
       </div>
     </body>
   </html>
