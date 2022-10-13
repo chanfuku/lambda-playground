@@ -75,6 +75,7 @@ def lambda_handler(event, context):
     decoded = json.loads(body)
     username = decoded['username']
     email = decoded['email']
+    inquiry = decoded['inquiry']
     # クライアントのIPアドレスを得る
     host = event['requestContext']['identity']['sourceIp']
 
@@ -82,10 +83,11 @@ def lambda_handler(event, context):
     url = s3.generate_presigned_url(
       ClientMethod = 'get_object',
       Params = {
-        'Bucket' : os.environ['SAVEBUCKET'],
-        'Key' : 'special.pdf'
+        'Bucket' : os.environ['SAVED_BUCKET'],
+        'Key' : os.environ['FILE_NAME']
       },
-      ExpiresIn = 8 * 60 * 60,
+      # 一週間
+      ExpiresIn = 24 * 60 * 60 * 7,
       HttpMethod = 'GET')
 
     # 現在のUNIXタイムスタンプを得る
@@ -97,6 +99,7 @@ def lambda_handler(event, context):
         'id' : nextseq,
         'username' : username,
         'email' : email,
+        'inquiry': inquiry,
         'accepted_at' : decimal.Decimal(str(now)),
         'host' : host,
         'url' : url
@@ -108,7 +111,7 @@ def lambda_handler(event, context):
 {0}様
 お問い合わせいただきありがとうございます。
 近日中に担当者よりご連絡させていただきます。
-資料は下記のURLからダウンロードできます。
+資料は下記のURLからダウンロードできます。※1週間で有効期限が切れますのでご注意ください。
 {1}
 """.format(username, url)
     sendmail(email, "お問い合わせいただきありがとうございます", mailbody)
